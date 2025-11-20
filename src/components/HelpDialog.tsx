@@ -44,8 +44,6 @@ export function HelpDialog({ isOpen, onClose }: HelpDialogProps) {
   const selectedChatId = useAtomValue(selectedChatIdAtom);
   const { settings } = useSettings();
 
-  const isDyadProUser = settings?.providerSettings?.["auto"]?.apiKey?.value;
-
   // Function to reset all dialog state
   const resetDialogState = () => {
     setIsLoading(false);
@@ -116,9 +114,6 @@ ${debugInfo.logs.slice(-3_500) || "No logs available"}
       const encodedBody = encodeURIComponent(issueBody);
       const encodedTitle = encodeURIComponent("[bug] <WRITE TITLE HERE>");
       const labels = ["bug"];
-      if (isDyadProUser) {
-        labels.push("pro");
-      }
       const githubIssueUrl = `https://github.com/dyad-sh/dyad/issues/new?title=${encodedTitle}&labels=${labels}&body=${encodedBody}`;
 
       // Open the pre-filled GitHub issue page
@@ -240,9 +235,6 @@ Session ID: ${sessionId}
     const encodedBody = encodeURIComponent(issueBody);
     const encodedTitle = encodeURIComponent("[session report] <add title>");
     const labels = ["support"];
-    if (isDyadProUser) {
-      labels.push("pro");
-    }
     const githubIssueUrl = `https://github.com/dyad-sh/dyad/issues/new?title=${encodedTitle}&labels=${labels}&body=${encodedBody}`;
 
     IpcClient.getInstance().openExternalUrl(githubIssueUrl);
@@ -393,41 +385,39 @@ Session ID: ${sessionId}
           If you need help or want to report an issue, here are some options:
         </DialogDescription>
         <div className="flex flex-col space-y-4 w-full">
-          {isDyadProUser ? (
-            <div className="flex flex-col space-y-2">
-              <Button
-                variant="default"
-                onClick={() => {
-                  setIsHelpBotOpen(true);
-                }}
-                className="w-full py-6 border-primary/50 shadow-sm shadow-primary/10 transition-all hover:shadow-md hover:shadow-primary/15"
-              >
-                <SparklesIcon className="mr-2 h-5 w-5" /> Chat with Dyad help
-                bot (Pro)
-              </Button>
-              <p className="text-sm text-muted-foreground px-2">
-                Opens an in-app help chat assistant that searches through Dyad's
-                docs.
-              </p>
-            </div>
-          ) : (
-            <div className="flex flex-col space-y-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  IpcClient.getInstance().openExternalUrl(
-                    "https://www.dyad.sh/docs",
-                  );
-                }}
-                className="w-full py-6 bg-(--background-lightest)"
-              >
-                <BookOpenIcon className="mr-2 h-5 w-5" /> Open Docs
-              </Button>
-              <p className="text-sm text-muted-foreground px-2">
-                Get help with common questions and issues.
-              </p>
-            </div>
-          )}
+          <div className="flex flex-col space-y-2">
+            <Button
+              variant="default"
+              onClick={() => {
+                setIsHelpBotOpen(true);
+              }}
+              className="w-full py-6 border-primary/50 shadow-sm shadow-primary/10 transition-all hover:shadow-md hover:shadow-primary/15"
+            >
+              <SparklesIcon className="mr-2 h-5 w-5" /> Chat with Dyad help
+              bot
+            </Button>
+            <p className="text-sm text-muted-foreground px-2">
+              Opens an in-app help chat assistant that searches through Dyad's
+              docs.
+            </p>
+          </div>
+
+          <div className="flex flex-col space-y-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                IpcClient.getInstance().openExternalUrl(
+                  "https://www.dyad.sh/docs",
+                );
+              }}
+              className="w-full py-6 bg-(--background-lightest)"
+            >
+              <BookOpenIcon className="mr-2 h-5 w-5" /> Open Docs
+            </Button>
+            <p className="text-sm text-muted-foreground px-2">
+              Get help with common questions and issues.
+            </p>
+          </div>
 
           <div className="flex flex-col space-y-2">
             <Button

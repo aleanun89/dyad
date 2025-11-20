@@ -19,8 +19,8 @@ const logger = log.scope("settings");
 // Need to maintain backwards compatibility!
 const DEFAULT_SETTINGS: UserSettings = {
   selectedModel: {
-    name: "auto",
-    provider: "auto",
+    name: "llama3.2",
+    provider: "ollama",
   },
   providerSettings: {},
   telemetryConsent: "unset",
@@ -28,7 +28,11 @@ const DEFAULT_SETTINGS: UserSettings = {
   hasRunBefore: false,
   experiments: {},
   enableProLazyEditsMode: true,
+  proLazyEditsMode: "v2",
   enableProSmartFilesContextMode: true,
+  proSmartContextOption: "deep",
+  enableProWebSearch: true,
+  thinkingBudget: "high",
   selectedChatMode: "build",
   enableAutoFixProblems: false,
   enableAutoUpdate: true,
