@@ -229,7 +229,6 @@ export const UserSettingsSchema = z.object({
   telemetryConsent: z.enum(["opted_in", "opted_out", "unset"]).optional(),
   telemetryUserId: z.string().optional(),
   hasRunBefore: z.boolean().optional(),
-  enableDyadPro: z.boolean().optional(),
   experiments: ExperimentsSchema.optional(),
   lastShownReleaseNotesVersion: z.string().optional(),
   maxChatTurnsInContext: z.number().optional(),
@@ -263,6 +262,7 @@ export const UserSettingsSchema = z.object({
   // DEPRECATED.
   ////////////////////////////////
   enableProSaverMode: z.boolean().optional(),
+  enableDyadPro: z.boolean().optional(),
   dyadProBudget: DyadProBudgetSchema.optional(),
   runtimeMode: RuntimeModeSchema.optional(),
 });
@@ -272,18 +272,9 @@ export const UserSettingsSchema = z.object({
  */
 export type UserSettings = z.infer<typeof UserSettingsSchema>;
 
-export function isDyadProEnabled(settings: UserSettings): boolean {
-  return settings.enableDyadPro === true && hasDyadProKey(settings);
-}
-
-export function hasDyadProKey(settings: UserSettings): boolean {
-  return !!settings.providerSettings?.auto?.apiKey?.value;
-}
-
 export function isTurboEditsV2Enabled(settings: UserSettings): boolean {
   return Boolean(
-    isDyadProEnabled(settings) &&
-      settings.enableProLazyEditsMode === true &&
+    settings.enableProLazyEditsMode === true &&
       settings.proLazyEditsMode === "v2",
   );
 }
