@@ -18,9 +18,11 @@ const logger = log.scope("settings");
 // IF YOU NEED TO UPDATE THIS, YOU'RE PROBABLY DOING SOMETHING WRONG!
 // Need to maintain backwards compatibility!
 const DEFAULT_SETTINGS: UserSettings = {
+  // Default to ollama with a placeholder model name
+  // The actual model selection should be done in the UI
   selectedModel: {
-    name: "auto",
-    provider: "auto",
+    name: "",
+    provider: "ollama",
   },
   providerSettings: {},
   telemetryConsent: "unset",
@@ -28,7 +30,11 @@ const DEFAULT_SETTINGS: UserSettings = {
   hasRunBefore: false,
   experiments: {},
   enableProLazyEditsMode: true,
+  proLazyEditsMode: "v2",
   enableProSmartFilesContextMode: true,
+  proSmartContextOption: "deep",
+  enableProWebSearch: true,
+  thinkingBudget: "high",
   selectedChatMode: "build",
   enableAutoFixProblems: false,
   enableAutoUpdate: true,

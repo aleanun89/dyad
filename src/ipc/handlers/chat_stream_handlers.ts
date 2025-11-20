@@ -84,7 +84,7 @@ import { AI_STREAMING_ERROR_MESSAGE_PREFIX } from "@/shared/texts";
 import { getCurrentCommitHash } from "../utils/git_utils";
 import {
   processChatMessagesWithVersionedFiles as getVersionedFiles,
-  VersionedFiles as VersionedFiles,
+  type VersionedFiles,
 } from "../utils/versioned_codebase_context";
 
 type AsyncIterableStream<T> = AsyncIterable<T> & ReadableStream<T>;
@@ -405,11 +405,8 @@ ${componentSnippet}
         })
         .returning();
       const settings = readSettings();
-      // Only Dyad Pro requests have request ids.
-      if (settings.enableDyadPro) {
-        // Generate requestId early so it can be saved with the message
-        dyadRequestId = uuidv4();
-      }
+      // Generate requestId early so it can be saved with the message
+      dyadRequestId = uuidv4();
 
       // Add a placeholder assistant message immediately
       const [placeholderAssistantMessage] = await db

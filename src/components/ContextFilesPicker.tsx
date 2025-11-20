@@ -112,8 +112,7 @@ export function ContextFilesPicker() {
     updateExcludePaths(newPaths);
   };
 
-  const isSmartContextEnabled =
-    settings?.enableDyadPro && settings?.enableProSmartFilesContextMode;
+  const isSmartContextEnabled = settings?.enableProSmartFilesContextMode ?? true;
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
