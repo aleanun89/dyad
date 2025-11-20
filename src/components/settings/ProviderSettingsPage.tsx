@@ -9,8 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {} from "@/components/ui/accordion";
 
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { showError } from "@/lib/toast";
 import {
   UserSettings,
   AzureProviderSetting,
@@ -137,9 +135,6 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
           },
         },
       };
-      if (isDyad) {
-        settingsUpdate.enableDyadPro = true;
-      }
       await updateSettings(settingsUpdate);
       setApiKeyInput(""); // Clear input on success
       // Optionally show a success message
@@ -174,19 +169,7 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
     }
   };
 
-  // --- Toggle Dyad Pro Handler ---
-  const handleToggleDyadPro = async (enabled: boolean) => {
-    setIsSaving(true);
-    try {
-      await updateSettings({
-        enableDyadPro: enabled,
-      });
-    } catch (error: any) {
-      showError(`Error toggling Dyad Pro: ${error}`);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+
 
   // Effect to clear input error when input changes
   useEffect(() => {
@@ -309,22 +292,6 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
             isDyad={isDyad}
             updateSettings={updateSettings}
           />
-        )}
-
-        {isDyad && !settingsLoading && (
-          <div className="mt-6 flex items-center justify-between p-4 bg-(--background-lightest) rounded-lg border">
-            <div>
-              <h3 className="font-medium">Enable Dyad Pro</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Toggle to enable Dyad Pro
-              </p>
-            </div>
-            <Switch
-              checked={settings?.enableDyadPro}
-              onCheckedChange={handleToggleDyadPro}
-              disabled={isSaving}
-            />
-          </div>
         )}
 
         {/* Conditionally render CustomModelsSection */}
