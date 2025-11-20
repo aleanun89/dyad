@@ -1,0 +1,74 @@
+# .github/workflows/build-windows-release.yml
+
+name: Build & Release Windows Installer (Manual)
+
+# Allow manual workflow trigger from GitHub Actions UI
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        with:
+          node-version: 20
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build Windows installer with electron-forge
+        run: npm run make
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
+      
+      - name: Get version from package.json
+        id: package-version
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+      
+      - name: Create zip archive of Windows installers
+        shell: bash
+        run: |
+          # Verify the output directory exists
+          if [ ! -d "out/make/squirrel.windows/x64" ]; then
+            echo "Error: Output directory not found"
+            exit 1
+          fi
+          
+          # List and verify files exist
+          echo "Files to package:"
+          ls -lh out/make/squirrel.windows/x64/
+          
+          # Create zip from workspace root using absolute path
+          cd "$GITHUB_WORKSPACE"
+          7z a dyad-windows-installer.zip ./out/make/squirrel.windows/x64/*.exe ./out/make/squirrel.windows/x64/*.nupkg ./out/make/squirrel.windows/x64/RELEASES
+          
+          echo "Created archive:"
+          ls -lh dyad-windows-installer.zip
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
+        with:
+          tag_name: v${{ steps.package-version.outputs.version }}
+          name: Release v${{ steps.package-version.outputs.version }}
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Upload both the zip and individual files
+          files: |
+            dyad-windows-installer.zip
+            out/make/squirrel.windows/x64/*.exe
+            out/make/squirrel.windows/x64/*.nupkg
+            out/make/squirrel.windows/x64/RELEASES
