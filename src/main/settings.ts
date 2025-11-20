@@ -18,8 +18,10 @@ const logger = log.scope("settings");
 // IF YOU NEED TO UPDATE THIS, YOU'RE PROBABLY DOING SOMETHING WRONG!
 // Need to maintain backwards compatibility!
 const DEFAULT_SETTINGS: UserSettings = {
+  // Default to ollama with a placeholder model name
+  // The actual model selection should be done in the UI
   selectedModel: {
-    name: "llama3.2",
+    name: "",
     provider: "ollama",
   },
   providerSettings: {},
