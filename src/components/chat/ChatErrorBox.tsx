@@ -1,5 +1,4 @@
 import { IpcClient } from "@/ipc/ipc_client";
-import { AI_STREAMING_ERROR_MESSAGE_PREFIX } from "@/shared/texts";
 import {
   X,
   ExternalLink as ExternalLinkIcon,
@@ -113,28 +112,6 @@ function ChatErrorContainer({
             children
           )}
         </div>
-      </div>
-    </div>
-  );
-}
-
-function ChatInfoContainer({
-  onDismiss,
-  children,
-}: {
-  onDismiss: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="relative mt-2 bg-sky-50 border border-sky-200 rounded-md shadow-sm p-2 mx-4">
-      <button
-        onClick={onDismiss}
-        className="absolute top-2.5 left-2 p-1 hover:bg-sky-100 rounded"
-      >
-        <X size={14} className="text-sky-600" />
-      </button>
-      <div className="pl-8 py-1 text-sm">
-        <div className="text-sky-800 text-wrap">{children}</div>
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ import { selectedChatIdAtom } from "@/atoms/chatAtoms";
 import { ChatLogsData } from "@/ipc/ipc_types";
 import { showError } from "@/lib/toast";
 import { HelpBotDialog } from "./HelpBotDialog";
-import { useSettings } from "@/hooks/useSettings";
 import { BugScreenshotDialog } from "./BugScreenshotDialog";
 
 interface HelpDialogProps {
@@ -42,7 +41,6 @@ export function HelpDialog({ isOpen, onClose }: HelpDialogProps) {
   const [isHelpBotOpen, setIsHelpBotOpen] = useState(false);
   const [isBugScreenshotOpen, setIsBugScreenshotOpen] = useState(false);
   const selectedChatId = useAtomValue(selectedChatIdAtom);
-  const { settings } = useSettings();
 
   // Function to reset all dialog state
   const resetDialogState = () => {

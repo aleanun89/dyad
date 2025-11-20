@@ -2,7 +2,6 @@ import { useAtom } from "jotai";
 import { selectedAppIdAtom } from "@/atoms/appAtoms";
 import { useLoadApps } from "@/hooks/useLoadApps";
 import { useRouter, useLocation } from "@tanstack/react-router";
-import { useSettings } from "@/hooks/useSettings";
 import { Button } from "@/components/ui/button";
 // @ts-ignore
 import logo from "../../assets/logo.svg";
@@ -16,7 +15,6 @@ export const TitleBar = () => {
   const { apps } = useLoadApps();
   const { navigate } = useRouter();
   const location = useLocation();
-  const { settings } = useSettings();
   const [showWindowControls, setShowWindowControls] = useState(false);
 
   useEffect(() => {

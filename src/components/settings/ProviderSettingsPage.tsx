@@ -9,8 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {} from "@/components/ui/accordion";
 
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { showError } from "@/lib/toast";
 import {
   UserSettings,
   AzureProviderSetting,
