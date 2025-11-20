@@ -41,9 +41,21 @@ jobs:
       - name: Create zip archive of Windows installers
         shell: bash
         run: |
-          cd out/make/squirrel.windows/x64
-          7z a ../../../../dyad-windows-installer.zip *.exe *.nupkg RELEASES
-          cd ../../../..
+          # Verify the output directory exists
+          if [ ! -d "out/make/squirrel.windows/x64" ]; then
+            echo "Error: Output directory not found"
+            exit 1
+          fi
+          
+          # List and verify files exist
+          echo "Files to package:"
+          ls -lh out/make/squirrel.windows/x64/
+          
+          # Create zip from workspace root using absolute path
+          cd "$GITHUB_WORKSPACE"
+          7z a dyad-windows-installer.zip ./out/make/squirrel.windows/x64/*.exe ./out/make/squirrel.windows/x64/*.nupkg ./out/make/squirrel.windows/x64/RELEASES
+          
+          echo "Created archive:"
           ls -lh dyad-windows-installer.zip
       
       - name: Create GitHub Release
